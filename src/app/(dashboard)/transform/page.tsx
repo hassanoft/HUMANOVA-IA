@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { TRANSFORM_MODES, INTENSITY_LEVELS } from "@/lib/plans";
+import { TRANSFORMATION_MODES, INTENSITY_LEVELS } from "@/lib/plans";
 import { toast } from "sonner";
 import { countWords } from "@/lib/utils";
 
@@ -94,7 +94,7 @@ export default function TransformPage() {
                   onChange={(e) => setMode(e.target.value)}
                   className="w-full border rounded-lg px-3 py-2"
                 >
-                  {TRANSFORM_MODES.map((m) => (
+                  {TRANSFORMATION_MODES.map((m) => (
                     <option key={m.id} value={m.id}>
                       {m.label}
                     </option>
