@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
     }
 
     // Log payment
-    await service.from("payments").insert({
+    const { error: paymentInsertError } = await service.from("payments").insert({
       user_id: data.metadata?.user_id || null,
       dodo_payment_id: data.payment_id,
       dodo_subscription_id: data.subscription_id,
@@ -44,7 +44,11 @@ export async function POST(request: NextRequest) {
       status: data.status || "succeeded",
       event_type: type,
       raw_payload: event,
-    }).then(() => {}).catch(() => {});
+    });
+
+    if (paymentInsertError) {
+      console.error("Unable to log Dodo payment webhook:", paymentInsertError);
+    }
 
     return NextResponse.json({ received: true });
   } catch (err) {
