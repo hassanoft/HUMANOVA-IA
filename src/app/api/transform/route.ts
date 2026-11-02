@@ -104,8 +104,10 @@ export async function POST(request: NextRequest) {
         mode: mode as TransformMode,
         intensity,
       });
-    } catch (aiError: any) {
-      console.error("OpenAI error:", aiError?.message || aiError);
+    } catch (aiError: unknown) {
+      const errorMessage =
+        aiError instanceof Error ? aiError.message : String(aiError);
+      console.error("OpenAI error:", errorMessage);
       return NextResponse.json(
         { error: "Erreur lors du traitement IA. Réessayez dans un instant." },
         { status: 502 }
@@ -165,8 +167,8 @@ export async function POST(request: NextRequest) {
       remainingWords:
         plan.wordsPerMonth - (profile.words_used_this_month + wordCount),
     });
-  } catch (err: any) {
-    console.error("Transform API error:", err);
+  } catch (err: unknown) {
+    console.error("Transform API error:", err instanceof Error ? err.message : String(err));
     return NextResponse.json(
       { error: "Erreur serveur interne" },
       { status: 500 }
